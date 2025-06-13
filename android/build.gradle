@@ -2,7 +2,7 @@ group 'me.akoraingdkb.app_launcher'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.7.0'
+    ext.kotlin_version = '2.1.21'
     repositories {
         google()
         mavenCentral()
@@ -21,51 +21,33 @@ rootProject.allprojects {
     }
 }
 
-// def localProperties = new Properties()
-// def localPropertiesFile = rootProject.file('local.properties')
-// if (localPropertiesFile.exists()) {
-//     localPropertiesFile.withReader('UTF-8') { reader ->
-//         localProperties.load(reader)
-//     }
-// }
-
-// def flutterRoot = localProperties.getProperty('flutter.sdk')
-// if (flutterRoot == null) {
-//     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
-// }
-
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-// apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
-    namespace 'me.akoraingdkb.app_launcher'
-    compileSdkVersion 34
+    namespace = "me.akoraingdkb.app_launcher"
+    compileSdk = 35
 
-     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+    def javaVersion = System.getenv("JAVA_VERSION") ?: "17"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.toVersion(javaVersion)
+        targetCompatibility = JavaVersion.toVersion(javaVersion)
     }
 
-    kotlin {
-        jvmToolchain(17)
+    kotlinOptions {
+        jvmTarget = javaVersion
     }
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
+
     defaultConfig {
-        minSdkVersion 16
+        minSdk = 21
     }
+
     lintOptions {
         disable 'InvalidPackage'
     }
-}
-
-// flutter {
-//     source '..'
-// }
-
-dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
